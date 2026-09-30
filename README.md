@@ -8,7 +8,8 @@ A professional Laravel package to generate multilingual UTF-8 slugs with smart, 
 - Generate clean, SEO-friendly slugs for any language
 - Skip transliteration automatically for configurable locales (e.g., ar, fa, ur)
 - Fully compatible with Laravel’s Str helper
-- Supports Laravel 9, 10, 11, 12
+- Supports Laravel 9, 10, 11, 12, 13
+- Works with spatie/laravel-sluggable out of the box
 - Zero config (but highly configurable if needed)
 - Auto-discovered (no need to manually register service provider)
 - Publishable config file for easy customization
@@ -97,6 +98,47 @@ $slug = Str::slugI18n('Laravel@10 ❤️', '-', 'en', ['@' => 'at', '❤️' => 
 
 // Force skip transliteration for any language
 $slug = Str::slugI18n('مثال على نص عربي', '-', 'en', [], true); // مثال-على-نص-عربي
+```
+
+---
+
+## 🔗 spatie/laravel-sluggable Integration
+
+When [spatie/laravel-sluggable](https://github.com/spatie/laravel-sluggable) v4+ is installed, the package swaps its `generate_slug` action for `GenerateSlugI18nAction`, so every `HasSlug` model slugifies through `SlugI18n`. Uniqueness, suffixes and all other spatie options keep working as before.
+
+Set the slug language on the model and add it to `skip_locales`:
+
+```php
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+
+class Product extends Model
+{
+    use HasSlug;
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug')
+            ->usingLanguage('ar');
+    }
+}
+```
+
+```
+SLUG_I18N_SKIP_LOCALES=ar
+```
+
+```php
+Product::create(['name' => 'سماعات لاسلكية'])->slug; // سماعات-لاسلكية
+Product::create(['name' => 'سماعات لاسلكية'])->slug; // سماعات-لاسلكية-1
+```
+
+If your app already sets its own `sluggable.actions.generate_slug`, it is left untouched. To turn the integration off:
+
+```
+SLUG_I18N_SPATIE_SLUGGABLE=false
 ```
 
 ---

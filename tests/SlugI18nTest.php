@@ -2,7 +2,6 @@
 
 namespace Developvi\LaravelSlugI18n\Tests;
 
-use Tests\TestCase;
 use Developvi\LaravelSlugI18n\SlugI18n;
 
 class SlugI18nTest extends TestCase

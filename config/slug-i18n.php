@@ -25,4 +25,17 @@ return [
             explode(',', (string) env('SLUG_I18N_SKIP_LOCALES', ''))
         ),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | spatie/laravel-sluggable Integration
+    |--------------------------------------------------------------------------
+    |
+    | When spatie/laravel-sluggable (v4+) is installed, its generate_slug action
+    | is swapped for one that slugifies through SlugI18n, so models using HasSlug
+    | keep Arabic (and other skipped locales) slugs. An app-defined action is
+    | never overridden. Set SLUG_I18N_SPATIE_SLUGGABLE=false to disable.
+    |
+    */
+    'spatie_sluggable' => env('SLUG_I18N_SPATIE_SLUGGABLE', true),
 ];

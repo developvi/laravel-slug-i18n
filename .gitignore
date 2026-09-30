@@ -10,3 +10,4 @@
 /.zed
 /auth.json
 /vendor
+/composer.lock
